@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" id="Definitions_1dpvk00" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="3.7.3">
+  <decision id="decide-treatment" name="DecideTreatment">
+    <extensionElements>
+      <biodi:bounds x="200" y="100" width="180" height="80" />
+    </extensionElements>
+    <decisionTable id="decisionTable_1" hitPolicy="FIRST">
+      <input id="input_1" label="ApplicationAge">
+        <inputExpression id="inputExpression_1" typeRef="integer">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0ppow1i">
+        <inputExpression id="LiteralExpression_1tv9333" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0ibeph6" label="Symptoms">
+        <inputExpression id="LiteralExpression_1cb2vff" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="output_1" label="Action" typeRef="string" />
+      <rule id="DecisionRule_1olidhy">
+        <inputEntry id="UnaryTests_0ajwpwg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0m0gunu">
+          <text>ApplicationEntityVariable.hasPrecondition</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nmv2tb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19isi54">
+          <text>admitToHospital</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zensx2">
+        <inputEntry id="UnaryTests_0a1u5je">
+          <text>ApplicationEntityVariable.age &gt; 70</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tm17gn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0oj5ukf">
+          <text>hasSymptoms</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0eev3d3">
+          <text>admitToHospital</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0o11j9j">
+        <inputEntry id="UnaryTests_0sbkpii">
+          <text>ApplicationEntityVariable.age &gt; 70</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lwyx0w">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dn5jpt">
+          <text>!hasSymptoms</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06tsx5q">
+          <text>admitToDoctor</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14oumij">
+        <inputEntry id="UnaryTests_11e4w0f">
+          <text>ApplicationEntityVariable.age &lt;= 70</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jlpga9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g1srzl">
+          <text>hasSymptoms</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1oq5wol">
+          <text>admitToDoctor</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0p12jnc">
+        <inputEntry id="UnaryTests_03175uq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mb9mwr">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c43t5a">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v9341n">
+          <text>sendQuarantine</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1bt9tjc">
+        <inputEntry id="UnaryTests_1qwc0hb">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qj814j">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1was1wl">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13yg932">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
