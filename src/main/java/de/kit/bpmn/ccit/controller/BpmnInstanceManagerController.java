@@ -40,7 +40,7 @@ public class BpmnInstanceManagerController {
 				Variables.objectValue(application).serializationDataFormat(SerializationDataFormats.JSON).create());
 
 		ProcessInstance result = runtimeService.createMessageCorrelation(intialMsgName).setVariables(variables)
-				.processInstanceBusinessKey(application.getApplicationId()).correlateStartMessage();
+				.processInstanceBusinessKey(application.getCaseId()).correlateStartMessage();
 
 		LOGGER.info("Message has started ProcessInstance: {}", result.getProcessInstanceId());
 
@@ -53,7 +53,7 @@ public class BpmnInstanceManagerController {
 		variables.put(callbackMessageVariableName, callbackMessage);
 
 		List<MessageCorrelationResult> resultList = runtimeService.createMessageCorrelation(messageName)
-				.setVariables(variables).processInstanceBusinessKey(application.getApplicationId())
+				.setVariables(variables).processInstanceBusinessKey(application.getCaseId())
 				.correlateAllWithResult();
 		for (MessageCorrelationResult result : resultList) {
 			if (result.getProcessInstance() != null)

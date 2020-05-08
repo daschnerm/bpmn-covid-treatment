@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -99,7 +100,10 @@ public class ProcessCustomClient extends FormLayout {
 				LocalDate dateValue = ((DatePicker) uiComponent).getValue();
 				if (dateValue != null)
 					field.set(payload, Date.from(dateValue.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-			}
+			} else if(uiComponent instanceof Checkbox){
+                            boolean booleanValue = ((Checkbox) uiComponent).getValue();
+                            field.set(payload, booleanValue);
+                        }
 
 			field.setAccessible(accessible);
 		}
@@ -108,7 +112,6 @@ public class ProcessCustomClient extends FormLayout {
 
 	private void buildUi(Class<?> inputClass, String parentName) {
 		for (Field field : inputClass.getDeclaredFields()) {
-
 			String id = buildFieldId(parentName, field.getName());
 			if (field.getType().isAssignableFrom(String.class) || field.getType().isAssignableFrom(Integer.class)) {
 				guiFields.put(id, new TextField());
@@ -116,7 +119,11 @@ public class ProcessCustomClient extends FormLayout {
 			} else if (field.getType().isAssignableFrom(Date.class)) {
 				guiFields.put(id, new DatePicker());
 				this.addFormItem((DatePicker) guiFields.get(id), field.getName());
-			} else {
+			} else if (field.getType().isAssignableFrom(Boolean.class)){
+                                LOGGER.info("Adding checkbox" ,field.getName(), field.getType(), id);
+                                guiFields.put(id, new Checkbox());
+                                this.addFormItem((Checkbox) guiFields.get(id), field.getName());
+                        }else {
 				LOGGER.info(
 						"Field {} wasn't added because type {} is not a applicable Format: Please use: java.util.String, java.util.Integer or java.util.Date only!",
 						field.getName(), field.getType());

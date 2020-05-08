@@ -7,9 +7,10 @@ public class ApplicationEntity implements Serializable {
 
 	private static final long serialVersionUID = 5662586968100171746L;
 	// vvvvvvv DON'T CHANGE vvvvvvv //
-	private String applicationId;
-	private String applicantName;
-	private Integer applicantAge;
+	private String caseId;
+	private String patientName;
+	private Integer patientAge;
+        private Boolean hasPreconditions;
 	private Date potentialStartDate;
 	// ============================ //
 
@@ -27,35 +28,41 @@ public class ApplicationEntity implements Serializable {
 	// vvv
 
 	// vvvvvvv DON'T CHANGE vvvvvvv //
-	public String getApplicationId() {
-		return applicationId;
+	public String getCaseId() {
+		return caseId;
 	}
 
 	//
-	public void setApplicationId(String applicationId) {
-		this.applicationId = applicationId;
+	public void setCaseId(String caseId) {
+		this.caseId = caseId;
 	}
 
-	//
-	public String getApplicantName() {
-		return applicantName;
-	}
+        public String getPatientName() {
+            return patientName;
+        }
 
-	//
-	public void setApplicantName(String applicantName) {
-		this.applicantName = applicantName;
-	}
+        public void setPatientName(String patientName) {
+            this.patientName = patientName;
+        }
 
-	//
-	public Integer getApplicantAge() {
-		return applicantAge;
-	}
+        public Integer getPatientAge() {
+            return patientAge;
+        }
 
-	//
-	public void setApplicantAge(Integer applicantAge) {
-		this.applicantAge = applicantAge;
-	}
+        public void setPatientAge(Integer patientAge) {
+            this.patientAge = patientAge;
+        }
 
+        public Boolean getHasPreconditions() {
+            return hasPreconditions;
+        }
+
+        public void setHasPreconditions(Boolean hasPreconditions) {
+            this.hasPreconditions = hasPreconditions;
+        }
+        
+        
+        
 	//
 	public Date getPotentialStartDate() {
 		return potentialStartDate;
