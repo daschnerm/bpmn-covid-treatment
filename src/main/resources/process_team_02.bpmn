@@ -17,11 +17,6 @@
       <bpmn:outgoing>Flow_1sx2jte</bpmn:outgoing>
       <bpmn:outgoing>Flow_193yevc</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:exclusiveGateway id="Gateway_1uzx8ry" name="Patient needs to be tested">
-      <bpmn:incoming>Flow_193yevc</bpmn:incoming>
-      <bpmn:incoming>Flow_1fcfk64</bpmn:incoming>
-      <bpmn:outgoing>Flow_0iptkpd</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
     <bpmn:userTask id="Activity_16cxb1i" name="Examine patients contacts">
       <bpmn:incoming>Flow_1sx2jte</bpmn:incoming>
       <bpmn:outgoing>Flow_0f5bwl4</bpmn:outgoing>
@@ -31,35 +26,6 @@
       <bpmn:outgoing>Flow_1fcfk64</bpmn:outgoing>
       <bpmn:outgoing>Flow_0oldvzg</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="EvaluateHealthDelegateTask" name="Test patient for covid-19" camunda:asyncAfter="true" camunda:delegateExpression="${evaluateHealthDelegate}">
-      <bpmn:incoming>Flow_0iptkpd</bpmn:incoming>
-      <bpmn:outgoing>Flow_16fu3sv</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_1twxciu" name="Check test result">
-      <bpmn:incoming>Flow_16fu3sv</bpmn:incoming>
-      <bpmn:outgoing>Flow_1dyfgf4</bpmn:outgoing>
-      <bpmn:outgoing>Flow_146iwin</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:task id="Activity_1tf0og3" name="Patient negative">
-      <bpmn:incoming>Flow_146iwin</bpmn:incoming>
-      <bpmn:outgoing>Flow_1xbfkve</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:endEvent id="Event_05apmv8" name="Patient doesn&#39;t have covid virus">
-      <bpmn:incoming>Flow_1vtxz5v</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:task id="Activity_06i3i2e" name="Send patient back home">
-      <bpmn:incoming>Flow_1m8k2t8</bpmn:incoming>
-      <bpmn:outgoing>Flow_1vtxz5v</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:exclusiveGateway id="Gateway_1u7duuo" name="Patient can go home">
-      <bpmn:incoming>Flow_0oldvzg</bpmn:incoming>
-      <bpmn:incoming>Flow_1xbfkve</bpmn:incoming>
-      <bpmn:outgoing>Flow_1m8k2t8</bpmn:outgoing>
-    </bpmn:exclusiveGateway>
-    <bpmn:userTask id="Activity_01feqsk" name="Patient positive">
-      <bpmn:incoming>Flow_1dyfgf4</bpmn:incoming>
-      <bpmn:outgoing>Flow_0p1xdog</bpmn:outgoing>
-    </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1sx2jte" name="Patient doesn&#39;t show symptoms" sourceRef="Gateway_1qsu80i" targetRef="Activity_16cxb1i">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!hasSymptoms}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
@@ -72,87 +38,144 @@
     <bpmn:sequenceFlow id="Flow_1fcfk64" name="Patient had contact with infected person" sourceRef="Gateway_090v232" targetRef="Gateway_1uzx8ry">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${hasContact}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1vtxz5v" sourceRef="Activity_06i3i2e" targetRef="Event_05apmv8" />
+    <bpmn:sequenceFlow id="Flow_1vtxz5v" sourceRef="Activity_06i3i2e" targetRef="Gateway_0kc8a01" />
     <bpmn:sequenceFlow id="Flow_0iptkpd" sourceRef="Gateway_1uzx8ry" targetRef="EvaluateHealthDelegateTask" />
     <bpmn:sequenceFlow id="Flow_16fu3sv" sourceRef="EvaluateHealthDelegateTask" targetRef="Gateway_1twxciu" />
-    <bpmn:sequenceFlow id="Flow_1dyfgf4" name="positive" sourceRef="Gateway_1twxciu" targetRef="Activity_01feqsk">
+    <bpmn:sequenceFlow id="Flow_1dyfgf4" name="positive" sourceRef="Gateway_1twxciu" targetRef="Activity_1ye1rz5">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSick}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_146iwin" name="negative" sourceRef="Gateway_1twxciu" targetRef="Activity_1tf0og3">
+    <bpmn:sequenceFlow id="Flow_146iwin" name="negative" sourceRef="Gateway_1twxciu" targetRef="Gateway_1u7duuo">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!isSick}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0oldvzg" name="Patient haven&#39;t had contact with infected person" sourceRef="Gateway_090v232" targetRef="Gateway_1u7duuo">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!hasContact}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1xbfkve" sourceRef="Activity_1tf0og3" targetRef="Gateway_1u7duuo" />
     <bpmn:sequenceFlow id="Flow_1m8k2t8" sourceRef="Gateway_1u7duuo" targetRef="Activity_06i3i2e" />
-    <bpmn:sequenceFlow id="Flow_0p1xdog" sourceRef="Activity_01feqsk" targetRef="Activity_1ye1rz5" />
-    <bpmn:sequenceFlow id="Flow_1cfsiwr" sourceRef="Activity_1ye1rz5" targetRef="Activity_1vk72r1" />
+    <bpmn:sequenceFlow id="Flow_1cfsiwr" sourceRef="Activity_1ye1rz5" targetRef="Gateway_1dnc8zd" />
+    <bpmn:exclusiveGateway id="Gateway_1uzx8ry" name="Patient needs to be tested">
+      <bpmn:incoming>Flow_193yevc</bpmn:incoming>
+      <bpmn:incoming>Flow_1fcfk64</bpmn:incoming>
+      <bpmn:outgoing>Flow_0iptkpd</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="EvaluateHealthDelegateTask" name="Test patient for covid-19" camunda:asyncAfter="true" camunda:delegateExpression="${evaluateHealthDelegate}">
+      <bpmn:documentation>This automatic tasks contains a random generator to determine if a patient has COVID-19 or not. It sets the variable isSick</bpmn:documentation>
+      <bpmn:incoming>Flow_0iptkpd</bpmn:incoming>
+      <bpmn:outgoing>Flow_16fu3sv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1twxciu" name="Check test result">
+      <bpmn:incoming>Flow_16fu3sv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dyfgf4</bpmn:outgoing>
+      <bpmn:outgoing>Flow_146iwin</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_10ntwxe" name="send to doctor" sourceRef="Gateway_1dnc8zd" targetRef="Activity_1x4xs9a">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${treatmentDecision=="admitToDoctor"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:businessRuleTask id="Activity_1ye1rz5" name="Decide treatment" camunda:resultVariable="treatmentDecision" camunda:decisionRef="decide-treatment" camunda:mapDecisionResult="singleEntry">
-      <bpmn:incoming>Flow_0p1xdog</bpmn:incoming>
+      <bpmn:incoming>Flow_1dyfgf4</bpmn:incoming>
       <bpmn:outgoing>Flow_1cfsiwr</bpmn:outgoing>
     </bpmn:businessRuleTask>
-    <bpmn:sequenceFlow id="Flow_0kvfy38" sourceRef="Activity_1vk72r1" targetRef="Event_0ig4smb" />
-    <bpmn:endEvent id="Event_0ig4smb" name="Patient has virus">
-      <bpmn:incoming>Flow_0kvfy38</bpmn:incoming>
-    </bpmn:endEvent>
-    <bpmn:userTask id="Activity_1vk72r1" name="Test">
+    <bpmn:exclusiveGateway id="Gateway_1dnc8zd" name="Treatment?">
       <bpmn:incoming>Flow_1cfsiwr</bpmn:incoming>
-      <bpmn:outgoing>Flow_0kvfy38</bpmn:outgoing>
+      <bpmn:outgoing>Flow_10ntwxe</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1oyhdlg</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1tb6876</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1oyhdlg" name="Send to hospital" sourceRef="Gateway_1dnc8zd" targetRef="Activity_1vee8ho">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${treatmentDecision=="admitToHospital"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0vf0sqr" sourceRef="Activity_1x4xs9a" targetRef="Gateway_1jzdfti" />
+    <bpmn:sequenceFlow id="Flow_1tb6876" name="Send self quarantine" sourceRef="Gateway_1dnc8zd" targetRef="Activity_19qq8an">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${treatmentDecision=="sendSelfQuarantine"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:task id="Activity_06i3i2e" name="Send patient back home">
+      <bpmn:incoming>Flow_1m8k2t8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vtxz5v</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0kyn006" sourceRef="Activity_19qq8an" targetRef="Gateway_0kc8a01" />
+    <bpmn:exclusiveGateway id="Gateway_1jzdfti">
+      <bpmn:incoming>Flow_0vf0sqr</bpmn:incoming>
+      <bpmn:incoming>Flow_0md6c52</bpmn:incoming>
+      <bpmn:outgoing>Flow_1a0cpph</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1a0cpph" sourceRef="Gateway_1jzdfti" targetRef="Event_0ig4smb" />
+    <bpmn:endEvent id="Event_0ig4smb" name="Patient treated">
+      <bpmn:incoming>Flow_1a0cpph</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0md6c52" sourceRef="Activity_1vee8ho" targetRef="Gateway_1jzdfti" />
+    <bpmn:sequenceFlow id="Flow_19peb76" sourceRef="Gateway_0kc8a01" targetRef="Event_05apmv8" />
+    <bpmn:endEvent id="Event_05apmv8" name="Patient is at home">
+      <bpmn:incoming>Flow_19peb76</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Activity_1x4xs9a" name="Admit to Doctor">
+      <bpmn:incoming>Flow_10ntwxe</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vf0sqr</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:userTask id="Activity_19qq8an" name="Send quarantine @ home">
+      <bpmn:incoming>Flow_1tb6876</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kyn006</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Activity_1vee8ho" name="Admit to hospital">
+      <bpmn:incoming>Flow_1oyhdlg</bpmn:incoming>
+      <bpmn:outgoing>Flow_0md6c52</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0kc8a01">
+      <bpmn:incoming>Flow_0kyn006</bpmn:incoming>
+      <bpmn:incoming>Flow_1vtxz5v</bpmn:incoming>
+      <bpmn:outgoing>Flow_19peb76</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_1u7duuo" name="Patient can go home">
+      <bpmn:incoming>Flow_0oldvzg</bpmn:incoming>
+      <bpmn:incoming>Flow_146iwin</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m8k2t8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
   </bpmn:process>
   <bpmn:message id="Message_0cjaiq4" name="PatientExaminationStart" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_03zbkvc">
       <bpmndi:BPMNShape id="Participant_1r3fwzt_di" bpmnElement="Participant_1r3fwzt" isHorizontal="true">
-        <dc:Bounds x="129" y="80" width="2471" height="810" />
+        <dc:Bounds x="129" y="80" width="2591" height="810" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0p1xdog_di" bpmnElement="Flow_0p1xdog">
-        <di:waypoint x="1880" y="270" />
-        <di:waypoint x="1960" y="270" />
+      <bpmndi:BPMNEdge id="Flow_1cfsiwr_di" bpmnElement="Flow_1cfsiwr">
+        <di:waypoint x="2170" y="330" />
+        <di:waypoint x="2245" y="330" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1m8k2t8_di" bpmnElement="Flow_1m8k2t8">
-        <di:waypoint x="1855" y="630" />
-        <di:waypoint x="2000" y="630" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1xbfkve_di" bpmnElement="Flow_1xbfkve">
-        <di:waypoint x="1830" y="550" />
-        <di:waypoint x="1830" y="605" />
+        <di:waypoint x="1755" y="630" />
+        <di:waypoint x="2090" y="630" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0oldvzg_di" bpmnElement="Flow_0oldvzg">
         <di:waypoint x="1195" y="630" />
-        <di:waypoint x="1805" y="630" />
+        <di:waypoint x="1705" y="630" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1450" y="580" width="80" height="40" />
+          <dc:Bounds x="1437" y="649" width="80" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_146iwin_di" bpmnElement="Flow_146iwin">
-        <di:waypoint x="1610" y="425" />
-        <di:waypoint x="1610" y="510" />
-        <di:waypoint x="1780" y="510" />
+        <di:waypoint x="1730" y="425" />
+        <di:waypoint x="1730" y="605" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1629" y="483" width="42" height="14" />
+          <dc:Bounds x="1739" y="503" width="42" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1dyfgf4_di" bpmnElement="Flow_1dyfgf4">
-        <di:waypoint x="1610" y="375" />
-        <di:waypoint x="1610" y="270" />
-        <di:waypoint x="1780" y="270" />
+        <di:waypoint x="1730" y="375" />
+        <di:waypoint x="1730" y="330" />
+        <di:waypoint x="2070" y="330" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1631" y="243" width="38" height="14" />
+          <dc:Bounds x="1811" y="312" width="38" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16fu3sv_di" bpmnElement="Flow_16fu3sv">
-        <di:waypoint x="1440" y="400" />
-        <di:waypoint x="1585" y="400" />
+        <di:waypoint x="1530" y="400" />
+        <di:waypoint x="1705" y="400" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0iptkpd_di" bpmnElement="Flow_0iptkpd">
         <di:waypoint x="1195" y="400" />
-        <di:waypoint x="1340" y="400" />
+        <di:waypoint x="1430" y="400" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1vtxz5v_di" bpmnElement="Flow_1vtxz5v">
-        <di:waypoint x="2100" y="630" />
-        <di:waypoint x="2172" y="630" />
+        <di:waypoint x="2190" y="630" />
+        <di:waypoint x="2405" y="630" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1fcfk64_di" bpmnElement="Flow_1fcfk64">
         <di:waypoint x="1170" y="605" />
@@ -189,15 +212,49 @@
           <dc:Bounds x="704" y="586" width="79" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1cfsiwr_di" bpmnElement="Flow_1cfsiwr">
-        <di:waypoint x="2060" y="270" />
-        <di:waypoint x="2136" y="270" />
+      <bpmndi:BPMNEdge id="Flow_10ntwxe_di" bpmnElement="Flow_10ntwxe">
+        <di:waypoint x="2295" y="330" />
+        <di:waypoint x="2380" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2302" y="312" width="72" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0kvfy38_di" bpmnElement="Flow_0kvfy38">
-        <di:waypoint x="2236" y="260" />
-        <di:waypoint x="2279" y="260" />
-        <di:waypoint x="2279" y="270" />
-        <di:waypoint x="2322" y="270" />
+      <bpmndi:BPMNEdge id="Flow_1oyhdlg_di" bpmnElement="Flow_1oyhdlg">
+        <di:waypoint x="2270" y="305" />
+        <di:waypoint x="2270" y="200" />
+        <di:waypoint x="2380" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2249" y="183" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vf0sqr_di" bpmnElement="Flow_0vf0sqr">
+        <di:waypoint x="2480" y="330" />
+        <di:waypoint x="2525" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tb6876_di" bpmnElement="Flow_1tb6876">
+        <di:waypoint x="2270" y="355" />
+        <di:waypoint x="2270" y="450" />
+        <di:waypoint x="2380" y="450" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2292" y="416" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kyn006_di" bpmnElement="Flow_0kyn006">
+        <di:waypoint x="2430" y="490" />
+        <di:waypoint x="2430" y="605" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1a0cpph_di" bpmnElement="Flow_1a0cpph">
+        <di:waypoint x="2575" y="330" />
+        <di:waypoint x="2622" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0md6c52_di" bpmnElement="Flow_0md6c52">
+        <di:waypoint x="2480" y="200" />
+        <di:waypoint x="2550" y="200" />
+        <di:waypoint x="2550" y="305" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_19peb76_di" bpmnElement="Flow_19peb76">
+        <di:waypoint x="2455" y="630" />
+        <di:waypoint x="2612" y="630" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0zzbwej_di" bpmnElement="StartEvent">
         <dc:Bounds x="252" y="512" width="36" height="36" />
@@ -230,46 +287,58 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0wchstg_di" bpmnElement="EvaluateHealthDelegateTask">
-        <dc:Bounds x="1340" y="360" width="100" height="80" />
+        <dc:Bounds x="1430" y="360" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1twxciu_di" bpmnElement="Gateway_1twxciu" isMarkerVisible="true">
-        <dc:Bounds x="1585" y="375" width="50" height="50" />
+        <dc:Bounds x="1705" y="375" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1509" y="373" width="82" height="14" />
+          <dc:Bounds x="1548" y="373" width="83" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1tf0og3_di" bpmnElement="Activity_1tf0og3">
-        <dc:Bounds x="1780" y="470" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_15901c8_di" bpmnElement="Activity_1ye1rz5">
+        <dc:Bounds x="2070" y="290" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_05apmv8_di" bpmnElement="Event_05apmv8">
-        <dc:Bounds x="2172" y="612" width="36" height="36" />
+      <bpmndi:BPMNShape id="Gateway_1dnc8zd_di" bpmnElement="Gateway_1dnc8zd" isMarkerVisible="true">
+        <dc:Bounds x="2245" y="305" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2151" y="655" width="79" height="27" />
+          <dc:Bounds x="2212" y="283" width="55" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_06i3i2e_di" bpmnElement="Activity_06i3i2e">
-        <dc:Bounds x="2000" y="590" width="100" height="80" />
+        <dc:Bounds x="2090" y="590" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1u7duuo_di" bpmnElement="Gateway_1u7duuo" isMarkerVisible="true">
-        <dc:Bounds x="1805" y="605" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1795" y="662" width="71" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0l0s8do_di" bpmnElement="Activity_01feqsk">
-        <dc:Bounds x="1780" y="230" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_15901c8_di" bpmnElement="Activity_1ye1rz5">
-        <dc:Bounds x="1960" y="230" width="100" height="80" />
+      <bpmndi:BPMNShape id="Gateway_1jzdfti_di" bpmnElement="Gateway_1jzdfti" isMarkerVisible="true">
+        <dc:Bounds x="2525" y="305" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0ig4smb_di" bpmnElement="Event_0ig4smb">
-        <dc:Bounds x="2322" y="252" width="36" height="36" />
+        <dc:Bounds x="2622" y="312" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="2299" y="295" width="82" height="14" />
+          <dc:Bounds x="2604" y="355" width="72" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0pybfib_di" bpmnElement="Activity_1vk72r1">
-        <dc:Bounds x="2136" y="230" width="100" height="80" />
+      <bpmndi:BPMNShape id="Event_05apmv8_di" bpmnElement="Event_05apmv8">
+        <dc:Bounds x="2612" y="612" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2587" y="655" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02gr7d7_di" bpmnElement="Activity_1x4xs9a">
+        <dc:Bounds x="2380" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cuw4b8_di" bpmnElement="Activity_19qq8an">
+        <dc:Bounds x="2380" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1b34542_di" bpmnElement="Activity_1vee8ho">
+        <dc:Bounds x="2380" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0kc8a01_di" bpmnElement="Gateway_0kc8a01" isMarkerVisible="true">
+        <dc:Bounds x="2405" y="605" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1u7duuo_di" bpmnElement="Gateway_1u7duuo" isMarkerVisible="true">
+        <dc:Bounds x="1705" y="605" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1695" y="662" width="71" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

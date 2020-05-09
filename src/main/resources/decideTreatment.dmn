@@ -7,74 +7,74 @@
     <decisionTable id="decisionTable_1" hitPolicy="FIRST">
       <input id="input_1" label="ApplicationAge">
         <inputExpression id="inputExpression_1" typeRef="integer">
-          <text></text>
+          <text>ApplicationEntityVariable.patientAge</text>
         </inputExpression>
       </input>
-      <input id="InputClause_0ppow1i">
-        <inputExpression id="LiteralExpression_1tv9333" typeRef="string">
-          <text></text>
+      <input id="InputClause_0ppow1i" label="hasPrecondition">
+        <inputExpression id="LiteralExpression_1tv9333" typeRef="boolean">
+          <text>ApplicationEntityVariable.hasPreconditions</text>
         </inputExpression>
       </input>
       <input id="InputClause_0ibeph6" label="Symptoms">
-        <inputExpression id="LiteralExpression_1cb2vff" typeRef="string">
-          <text></text>
+        <inputExpression id="LiteralExpression_1cb2vff" typeRef="boolean">
+          <text>hasSymptoms</text>
         </inputExpression>
       </input>
-      <output id="output_1" label="Action" typeRef="string" />
+      <output id="output_1" label="treatmentDecision" name="treatmentDecision" typeRef="string" />
       <rule id="DecisionRule_1olidhy">
         <inputEntry id="UnaryTests_0ajwpwg">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0m0gunu">
-          <text>ApplicationEntityVariable.hasPrecondition</text>
+          <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0nmv2tb">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19isi54">
-          <text>admitToHospital</text>
+          <text>"admitToHospital"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0zensx2">
         <inputEntry id="UnaryTests_0a1u5je">
-          <text>ApplicationEntityVariable.age &gt; 70</text>
+          <text>&gt;70</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0tm17gn">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0oj5ukf">
-          <text>hasSymptoms</text>
+          <text>true</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0eev3d3">
-          <text>admitToHospital</text>
+          <text>"admitToHospital"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0o11j9j">
-        <inputEntry id="UnaryTests_0sbkpii">
-          <text>ApplicationEntityVariable.age &gt; 70</text>
+      <rule id="DecisionRule_1d18nfb">
+        <inputEntry id="UnaryTests_0hsa6sp">
+          <text>&gt;70</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0lwyx0w">
+        <inputEntry id="UnaryTests_19gp7ct">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0dn5jpt">
-          <text>!hasSymptoms</text>
+        <inputEntry id="UnaryTests_0c9zbw7">
+          <text>false</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_06tsx5q">
-          <text>admitToDoctor</text>
+        <outputEntry id="LiteralExpression_1m0zr7h">
+          <text>"admitToDoctor"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_14oumij">
         <inputEntry id="UnaryTests_11e4w0f">
-          <text>ApplicationEntityVariable.age &lt;= 70</text>
+          <text>&lt;= 70</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0jlpga9">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1g1srzl">
-          <text>hasSymptoms</text>
+          <text>true</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1oq5wol">
-          <text>admitToDoctor</text>
+          <text>"admitToDoctor"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0p12jnc">
@@ -88,7 +88,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0v9341n">
-          <text>sendQuarantine</text>
+          <text>"sendSelfQuarantine"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1bt9tjc">
@@ -102,6 +102,48 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_13yg932">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hp1hn2">
+        <inputEntry id="UnaryTests_14eswbw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17k441l">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1h8sckm">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vbwuyj">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0kan257">
+        <inputEntry id="UnaryTests_1cqxdcz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06rm3sv">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y7orbt">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_124f3yc">
+          <text></text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06w27v2">
+        <inputEntry id="UnaryTests_02zh4fq">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dpwtvt">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wts2io">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03cw627">
           <text></text>
         </outputEntry>
       </rule>
